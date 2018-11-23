@@ -22,7 +22,7 @@ Javascript, HTML, CSS, Java 1.8, Spring 5 (Spring Data, Spring Websocket...), Mo
 
 ### Testing
 * Unit tests: they were written using the Gherkin syntax and are responsible mainly for testing the game logic. Coverage is 94% of lines. Mocks were used.
-* Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization. Nothing was mocked.
+* Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization. Coverage is 81% of lines. Nothing was mocked.
 * UI tests: done manually.
 
 # What was NOT done?
