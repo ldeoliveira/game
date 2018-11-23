@@ -9,7 +9,6 @@ Clone this repo, cd into the project's directory and type the following command:
 
 Disclaimer: the integration tests use an embedded version of MongoDB that takes some time to setup the first time you execute them. 
 
-
 # Playing
 
 After the application is up, the game should be available at `http://localhost:9090/game-ui`. To simulate 2 players against each other, simply open the same URL in another tab.
@@ -26,9 +25,19 @@ Javascript, HTML, CSS, Java 1.8, Spring 5 (Spring Data, Spring Websocket...), Mo
 * Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization.
 * UI tests: done manually.
 
+# What was NOT done?
+
+I would like to mention some features that should be included to reach a production level:
+
+* Security: authentication, use HTTPS instead of HTTP, WSS instead of WS, and so on...
+* Fault tolerance: handle edge cases like, for example, player abandons the game
+* Documentation: Swagger and Javadocs
+* Logging
+
+
 # References
 
-Last, but never leat, some resources were fundamental for me completing this assignment. I think it's more than fair to mention them below:
+Last, but never least, some resources were fundamental for me completing this assignment. I think it's more than fair to mention them below:
 
 * https://dev-pages.info/how-to-run-spring-boot-and-mongodb-in-docker-using-docker-compose/
 * https://techlab.bol.com/in-search-for-perfect-coding-interview-assignment/
