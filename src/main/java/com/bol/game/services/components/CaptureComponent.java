@@ -21,13 +21,13 @@ public class CaptureComponent {
     }
 
     private void captureStonesFrom(Pit lastPit, int[][] board) {
-        int row = lastPit.getRow();
-        int pit = lastPit.getPit();
-        int opponentRow = (row + 1) % 2;
-        int myStones = board[row][pit];
-        int opponentStones = board[opponentRow][MANCALA - 1  - pit];
-        board[row][MANCALA] += myStones + opponentStones;
-        board[row][pit] = 0;
-        board[opponentRow][MANCALA - 1  - pit] = 0;
+        int myRow = lastPit.getRow();
+        int myPit = lastPit.getPit();
+        int opponentRow = (myRow + 1) % 2;
+        int myStones = board[myRow][myPit];
+        int opponentStones = board[opponentRow][MANCALA - 1  - myPit];
+        board[myRow][MANCALA] += myStones + opponentStones;
+        board[myRow][myPit] = 0;
+        board[opponentRow][MANCALA - 1  - myPit] = 0;
     }
 }
