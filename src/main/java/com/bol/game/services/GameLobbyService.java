@@ -4,7 +4,6 @@ import com.bol.game.exceptions.InsufficientPlayersException;
 import com.bol.game.pojos.Game;
 import com.bol.game.pojos.Player;
 import com.bol.game.repositories.GameRepository;
-import com.bol.game.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

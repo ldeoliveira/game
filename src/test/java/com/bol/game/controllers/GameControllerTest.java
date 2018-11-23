@@ -27,33 +27,29 @@ import static com.bol.game.controllers.context.BDDContext.SECOND_PLAYER_ID;
 @RunWith(MockitoJUnitRunner.class)
 public class GameControllerTest {
 
-    private GameController gameController;
-    private GameLobbyService gameLobbyService;
-    private GameEngineService gameEngineService;
-
-    BDDContext.Given given;
-    BDDContext.When when;
-    BDDContext.Then then;
+    private BDDContext.Given given;
+    private BDDContext.When when;
+    private BDDContext.Then then;
 
     @Mock
-    SimpMessagingTemplate simpMessagingTemplate;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Mock
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     @Mock
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
     @Before
     public void setup() {
 
-        gameEngineService = new GameEngineService(gameRepository, new SowComponent(),
+        GameEngineService gameEngineService = new GameEngineService(gameRepository, new SowComponent(),
                 new VictoryComponent(), new CaptureComponent(),
                 new TurnControlComponent());
 
-        gameLobbyService = new GameLobbyService(gameRepository);
+        GameLobbyService gameLobbyService = new GameLobbyService(gameRepository);
 
-        gameController = new GameController(gameLobbyService, simpMessagingTemplate,
+        GameController gameController = new GameController(gameLobbyService, simpMessagingTemplate,
                 gameRepository, gameEngineService, playerRepository);
 
 
@@ -99,8 +95,8 @@ public class GameControllerTest {
 
         when.firstPlayerMakeMove(0);
 
-        then.assertFirstPlayersPitsAre(new int[]{0, 7, 7, 7, 7, 7, 1})
-                .and().assertSecondPlayersPitsAre(new int[]{6, 6, 6, 6, 6, 6, 0})
+        then.assertFirstPlayersPitsAre(0, 7, 7, 7, 7, 7, 1)
+                .and().assertSecondPlayersPitsAre(6, 6, 6, 6, 6, 6, 0)
                 .and().assertItsFirstPlayerTurn()
                 .and().assertGameIsNotOver()
                 .and().assertGameWasSaved()
@@ -119,8 +115,8 @@ public class GameControllerTest {
 
         when.firstPlayerMakeMove(0);
 
-        then.assertFirstPlayersPitsAre(new int[]{0, 0, 8, 8, 8, 8, 10})
-                .and().assertSecondPlayersPitsAre(new int[]{0, 8, 7, 7, 0, 7, 1})
+        then.assertFirstPlayersPitsAre(0, 0, 8, 8, 8, 8, 10)
+                .and().assertSecondPlayersPitsAre(0, 8, 7, 7, 0, 7, 1)
                 .and().assertGameIsNotOver()
                 .and().assertItsSecondPlayerTurn()
                 .and().assertGameWasSaved()
@@ -139,8 +135,8 @@ public class GameControllerTest {
         when.secondPlayerMakeMove(4);
 
 
-        then.assertFirstPlayersPitsAre(new int[]{7, 7, 7, 7, 6, 6, 0})
-                .and().assertSecondPlayersPitsAre(new int[]{6, 6, 6, 6, 0, 7, 1})
+        then.assertFirstPlayersPitsAre(7, 7, 7, 7, 6, 6, 0)
+                .and().assertSecondPlayersPitsAre(6, 6, 6, 6, 0, 7, 1)
                 .and().assertGameIsNotOver()
                 .and().assertItsFirstPlayerTurn()
                 .and().assertGameWasSaved()
@@ -159,8 +155,8 @@ public class GameControllerTest {
 
         when.secondPlayerMakeMove(5);
 
-        then.assertFirstPlayersPitsAre(new int[]{7, 7, 7, 7, 7, 7, 0})
-                .and().assertSecondPlayersPitsAre(new int[]{7, 7, 6, 6, 3, 0, 1})
+        then.assertFirstPlayersPitsAre(7, 7, 7, 7, 7, 7, 0)
+                .and().assertSecondPlayersPitsAre(7, 7, 6, 6, 3, 0, 1)
                 .and().assertItsFirstPlayerTurn()
                 .and().assertGameIsNotOver()
                 .and().assertGameWasSaved()
@@ -179,8 +175,8 @@ public class GameControllerTest {
         when.secondPlayerMakeMove(1);
 
 
-        then.assertFirstPlayersPitsAre(new int[]{0, 0, 0, 0, 0, 0, 18})
-                .and().assertSecondPlayersPitsAre(new int[]{0, 0, 0, 0, 0, 0, 21})
+        then.assertFirstPlayersPitsAre(0, 0, 0, 0, 0, 0, 18)
+                .and().assertSecondPlayersPitsAre(0, 0, 0, 0, 0, 0, 21)
                 .and().assertSecondlayerWon()
                 .and().assertGameIsOver()
                 .and().assertGameWasSaved()
@@ -198,8 +194,8 @@ public class GameControllerTest {
 
         when.firstPlayerMakeMove(2);
 
-        then.assertFirstPlayersPitsAre(new int[]{0, 0, 0, 0, 0, 0, 21})
-                .and().assertSecondPlayersPitsAre(new int[]{0, 0, 0, 6, 0, 0, 18})
+        then.assertFirstPlayersPitsAre(0, 0, 0, 0, 0, 0, 21)
+                .and().assertSecondPlayersPitsAre(0, 0, 0, 6, 0, 0, 18)
                 .and().assertFirstPlayerWon()
                 .and().assertGameIsOver()
                 .and().assertGameWasSaved()

@@ -162,19 +162,19 @@ public class BDDContext {
         Game game;
 
         public Then assertGameIsInitialized() {
-            assertFirstPlayersPitsAre(new int[]{6, 6, 6, 6, 6, 6, 0});
-            assertSecondPlayersPitsAre(new int[]{6, 6, 6, 6, 6, 6, 0});
+            assertFirstPlayersPitsAre(6, 6, 6, 6, 6, 6, 0);
+            assertSecondPlayersPitsAre(6, 6, 6, 6, 6, 6, 0);
             assertItsFirstPlayerTurn();
             assertGameIsNotOver();
             return this;
         }
 
-        public Then assertFirstPlayersPitsAre(int[] pits) {
+        public Then assertFirstPlayersPitsAre(int... pits) {
             assertThat(game.getFirstPlayer().getPits(), is(pits));
             return this;
         }
 
-        public Then assertSecondPlayersPitsAre(int[] pits) {
+        public Then assertSecondPlayersPitsAre(int... pits) {
             assertThat(game.getSecondPlayer().getPits(), is(pits));
             return this;
         }

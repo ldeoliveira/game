@@ -16,12 +16,12 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerControllerTest {
 
-    public static final String PLAYER_NAME = "playerName";
-    public static final String PLAYER_ID = "playerId";
-    PlayerController playerController;
+    private static final String PLAYER_NAME = "playerName";
+    private static final String PLAYER_ID = "playerId";
+    private PlayerController playerController;
 
     @Mock
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
     @Before
     public void setup() {
