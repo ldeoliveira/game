@@ -5,7 +5,7 @@ Simple board game
 
 Clone this repo, cd into the project's directory and type the following command:
 
-`/gradlew build && docker-compose build && docker-compose up`
+`./gradlew build && docker-compose build && docker-compose up`
 
 Disclaimer: the integration tests use an embedded version of MongoDB that takes some time to setup the first time you execute them. 
 
