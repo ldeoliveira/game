@@ -19,12 +19,21 @@ Players are assigned a board on a first-come first-serve basis. Therefore, it is
 # Technical details
 
 ### Stack: 
-Java 1.8, Spring 5 (Spring Data, Spring Websocket...), MongoDB, Docker, Gradle
+Javascript, HTML, CSS, Java 1.8, Spring 5 (Spring Data, Spring Websocket...), MongoDB, Docker, Gradle
 
 ### Testing
 * Unit tests: they were written using the Gherkin syntax and are responsible mainly for testing the game logic. Coverage is 94% of lines.
 * Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization.
 * UI tests: done manually.
+
+# References
+
+Last, but never leat, some resources were fundamental for me completing this assignment. I think it's more than fair to mention them below:
+
+* https://dev-pages.info/how-to-run-spring-boot-and-mongodb-in-docker-using-docker-compose/
+* https://techlab.bol.com/in-search-for-perfect-coding-interview-assignment/
+* https://www.petrikainulainen.net/programming/gradle/getting-started-with-gradle-integration-testing/
+* https://spring.io/guides/gs/messaging-stomp-websocket/
 
 
 
