@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Movement {
 
-    private String id;
-
     @NotBlank
     private String gameId;
 

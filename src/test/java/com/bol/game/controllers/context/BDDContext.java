@@ -191,7 +191,7 @@ public class BDDContext {
 
 
         public Then assertPlayerWasNotified(String playerId) {
-            verify(simpMessagingTemplate).convertAndSend("/queue/board"+playerId, game);
+            verify(simpMessagingTemplate).convertAndSend("/queue/board" + playerId, game);
             return this;
         }
 

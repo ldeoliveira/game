@@ -109,7 +109,7 @@ public class GameControllerTest {
     public void testGameRules_playerShouldCaptureStones_ifLastPitWasEmpty() throws Exception {
 
         given.aGameInProgress()
-                .withCurrentBoard(new int[][]{{1,0,8,8,8,8,2}, {0,8,7,7,7,7,1}})
+                .withCurrentBoard(new int[][]{{1, 0, 8, 8, 8, 8, 2}, {0, 8, 7, 7, 7, 7, 1}})
                 .withPlayerTurn(FIRST_PLAYER_ID)
                 .exists();
 

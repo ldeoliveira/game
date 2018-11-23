@@ -25,9 +25,9 @@ public class CaptureComponent {
         int myPit = lastPit.getPit();
         int opponentRow = (myRow + 1) % 2;
         int myStones = board[myRow][myPit];
-        int opponentStones = board[opponentRow][MANCALA - 1  - myPit];
+        int opponentStones = board[opponentRow][MANCALA - 1 - myPit];
         board[myRow][MANCALA] += myStones + opponentStones;
         board[myRow][myPit] = 0;
-        board[opponentRow][MANCALA - 1  - myPit] = 0;
+        board[opponentRow][MANCALA - 1 - myPit] = 0;
     }
 }

@@ -25,6 +25,8 @@ import javax.validation.Valid;
 @RestController
 public class GameController {
 
+    public static final String GAME_PATH = "/game";
+
     private final GameLobbyService joinService;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final GameRepository gameRepository;
@@ -43,7 +45,7 @@ public class GameController {
     }
 
 
-    @GetMapping(path = "/game/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = GAME_PATH + "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Game joinPlayer(@PathVariable(value = "playerId") String playerId) throws InexistentPlayerException {
 
         Player player = playerRepository.findById(playerId)
@@ -54,7 +56,7 @@ public class GameController {
         return newGame;
     }
 
-    @PostMapping(path = "/game", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = GAME_PATH, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Game moveStones(@RequestBody @Valid Movement movement) {
 
         Game game = gameRepository.findById(movement.getGameId())
