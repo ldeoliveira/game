@@ -7,7 +7,7 @@ Clone this repo, cd into the project's directory and type the following command:
 
 `./gradlew build && docker-compose build && docker-compose up`
 
-Disclaimer: the integration tests use an embedded version of MongoDB that takes some time to setup the first time you execute them. 
+*Disclaimer:* the integration tests use an embedded version of MongoDB that takes some time to setup the first time you execute them. 
 
 # Playing
 
@@ -21,8 +21,8 @@ Players are assigned a board on a first-come first-serve basis. Therefore, it is
 Javascript, HTML, CSS, Java 1.8, Spring 5 (Spring Data, Spring Websocket...), MongoDB, Docker, Gradle
 
 ### Testing
-* Unit tests: they were written using the Gherkin syntax and are responsible mainly for testing the game logic. Coverage is 94% of lines.
-* Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization.
+* Unit tests: they were written using the Gherkin syntax and are responsible mainly for testing the game logic. Coverage is 94% of lines. Mocks were used.
+* Integration tests: they are mainly responsible for testing HTTP related communication, like request payload validation, correct status, and response serialization. Nothing was mocked.
 * UI tests: done manually.
 
 # What was NOT done?
