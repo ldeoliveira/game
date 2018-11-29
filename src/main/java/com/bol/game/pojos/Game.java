@@ -6,6 +6,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "games")
 public class Game {
 
+    public Game(Player firstPlayer) {
+        this.firstPlayer = firstPlayer;
+    }
+
+    public Game(Player firstPlayer, Player secondPlayer) {
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
+    }
+
+    public Game() {
+
+    }
+
     @Id
     private String id;
 

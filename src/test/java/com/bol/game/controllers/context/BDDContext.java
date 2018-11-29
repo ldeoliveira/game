@@ -81,6 +81,7 @@ public class BDDContext {
 
             Player secondPlayer = new Player(SECOND_PLAYER_ID, SECOND_PLAYER_NAME);
             when(playerRepository.findById(SECOND_PLAYER_ID)).thenReturn(Optional.of(secondPlayer));
+            when(gameRepository.save(any(Game.class))).thenAnswer(i -> i.getArguments()[0]);
         }
 
         public Given aGameInProgress() {
