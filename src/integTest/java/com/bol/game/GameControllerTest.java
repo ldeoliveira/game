@@ -5,6 +5,7 @@ import com.bol.game.pojos.Movement;
 import com.bol.game.pojos.Player;
 import com.bol.game.repositories.GameRepository;
 import com.bol.game.repositories.PlayerRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -106,7 +108,7 @@ public class GameControllerTest {
 
         List<String> ids = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Player createdPlayer = playerRepository.save(new Player("player" + i));
             ids.add(createdPlayer.getId());
         }
@@ -130,7 +132,16 @@ public class GameControllerTest {
             }
         });
 
-        assertEquals(5, gameRepository.findAll().size());
+        List<Game> games = gameRepository.findAll();
+
+        assertEquals(50, games.size());
+
+        ids.stream().forEach(id -> assertTrue(
+                games
+                .stream()
+                .filter(game -> game.getSecondPlayer().getId().equals(id)
+                            || game.getFirstPlayer().getId().equals(id))
+                .count() == 1));
 
         clearRepos();
 
