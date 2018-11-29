@@ -36,8 +36,6 @@ public class GameControllerTest {
     @Autowired
     GameRepository gameRepository;
 
-    @Autowired
-    TestRestTemplate testRestTemplate;
 
     Player firstPlayer;
     Player secondPlayer;
