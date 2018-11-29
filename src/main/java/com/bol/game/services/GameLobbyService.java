@@ -27,27 +27,25 @@ public class GameLobbyService {
     }
 
     public Game join(Player player) {
-
-        Game game = lobby.updateAndGet(gameLobby -> addPlayerToLobby(player, gameLobby));
-
-        if (game.getSecondPlayer()!=null && game.getFirstPlayer()!=null) {
-            game.setTurnOfWithId(game.getFirstPlayer().getId());
-            game.getFirstPlayer().setPits(initRow());
-            game.getSecondPlayer().setPits(initRow());
-            return gameRepository.save(game);
-        }
-
-        throw new InsufficientPlayersException();
+        return lobby.getAndUpdate(gameLobby -> addPlayerToLobby(player, gameLobby));
     }
 
     private Game addPlayerToLobby(Player player, Game gameLobby) {
+
         if (gameLobby.getFirstPlayer() == null
                 || gameLobby.getFirstPlayer().getId().equals(player.getId())) {
-            return new Game(player);
-        } else if (gameLobby.getSecondPlayer() == null) {
-            return new Game(gameLobby.getFirstPlayer(), player);
+            gameLobby.setFirstPlayer(player);
+            throw new InsufficientPlayersException();
         }
-        throw new IllegalStateException();
+
+        if (gameLobby.getSecondPlayer() == null) {
+            gameLobby.setSecondPlayer(player);
+            gameLobby.setTurnOfWithId(gameLobby.getFirstPlayer().getId());
+            gameLobby.getFirstPlayer().setPits(initRow());
+            gameLobby.getSecondPlayer().setPits(initRow());
+            gameRepository.save(gameLobby);
+        }
+        return new Game();
     }
 
     private int[] initRow() {

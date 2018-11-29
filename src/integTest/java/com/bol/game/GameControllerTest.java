@@ -9,11 +9,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,6 +35,9 @@ public class GameControllerTest {
 
     @Autowired
     GameRepository gameRepository;
+
+    @Autowired
+    TestRestTemplate testRestTemplate;
 
     Player firstPlayer;
     Player secondPlayer;
@@ -87,10 +97,44 @@ public class GameControllerTest {
 
         webTestClient.get().uri("/game/notFound")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .jsonPath("$.message").isEqualTo("player does not exist in application domain");
+                .exchange();
+
+    }
+
+    @Test
+    public void testJoinGame_threadSafety() throws Exception {
+
+        clearRepos();
+
+        List<String> ids = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            Player createdPlayer = playerRepository.save(new Player("player" + i));
+            ids.add(createdPlayer.getId());
+        }
+
+        List<Thread> threadList = new ArrayList<>();
+        ids.forEach(id -> threadList.add(new Thread(
+                () ->
+                webTestClient.get().uri("/game/" + id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .exchange()
+                            .expectStatus()
+                            .is2xxSuccessful()
+        )));
+
+        threadList.forEach(thread -> {
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                fail();
+            }
+        });
+
+        assertEquals(5, gameRepository.findAll().size());
+
+        clearRepos();
 
     }
 

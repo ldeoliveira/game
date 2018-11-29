@@ -23,6 +23,10 @@ public class Player {
         this.name = name;
     }
 
+    public Player(@NotBlank String name) {
+        this.name = name;
+    }
+
     public Player() {
     }
 

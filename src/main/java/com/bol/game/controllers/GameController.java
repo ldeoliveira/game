@@ -11,6 +11,7 @@ import com.bol.game.repositories.GameRepository;
 import com.bol.game.repositories.PlayerRepository;
 import com.bol.game.services.GameEngineService;
 import com.bol.game.services.GameLobbyService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
