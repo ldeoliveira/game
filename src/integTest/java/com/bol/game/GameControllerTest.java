@@ -112,13 +112,12 @@ public class GameControllerTest {
 
         clearRepos();
 
-
         ExecutorService service =
                 Executors.newCachedThreadPool();
 
         List<String> ids = new ArrayList<>();
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 200; i++) {
             Player createdPlayer = playerRepository.save(new Player("player" + i));
             ids.add(createdPlayer.getId());
         }
@@ -142,7 +141,7 @@ public class GameControllerTest {
 
         List<Game> games = gameRepository.findAll();
 
-        assertThat(games.size(), is(250));
+        assertThat(games.size(), is(100));
 
         ids.stream().forEach(id -> assertTrue(
                 games
