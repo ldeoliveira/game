@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class GameLobbyService {
 
-    private static final int STONES_PER_PIT = 6;
-    private static final int NUMBER_OF_PITS = 7;
+    public static final int STONES_PER_PIT = 6;
+    public static final int NUMBER_OF_PITS = 7;
 
     private AtomicReference<Lobby> lobby;
 
@@ -35,11 +35,8 @@ public class GameLobbyService {
             throw new InsufficientPlayersException();
         }
 
-        Game game = new Game(updatedLobby.getFirstPlayer(), updatedLobby.getSecondPlayer());
-        game.setTurnOfWithId(game.getFirstPlayer().getId());
-        game.getFirstPlayer().setPits(initRow());
-        game.getSecondPlayer().setPits(initRow());
-        return gameRepository.save(game);
+        return gameRepository.save(
+                new Game(updatedLobby.getFirstPlayer(), updatedLobby.getSecondPlayer()));
     }
 
     private Lobby addPlayerToLobby(Player player, Lobby lobby) {
@@ -56,17 +53,8 @@ public class GameLobbyService {
                 return new Lobby(player);
             }
         }
-
     }
 
-    private int[] initRow() {
-        int[] row = new int[NUMBER_OF_PITS];
-        for (int i = 0; i < NUMBER_OF_PITS - 1; i++) {
-            row[i] = STONES_PER_PIT;
-        }
-        row[NUMBER_OF_PITS - 1] = 0;
-        return row;
-    }
 
 
 }
