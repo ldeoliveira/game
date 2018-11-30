@@ -49,6 +49,7 @@ public class GameController {
     @GetMapping(path = GAME_PATH + "/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Game joinPlayer(@PathVariable(value = "playerId") String playerId) throws InexistentPlayerException {
 
+        LoggerFactory.getLogger(GameController.class).info("received request");
         Player player = playerRepository.findById(playerId)
                 .orElseThrow(InexistentPlayerException::new);
 

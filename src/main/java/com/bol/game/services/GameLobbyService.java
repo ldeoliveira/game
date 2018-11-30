@@ -2,6 +2,7 @@ package com.bol.game.services;
 
 import com.bol.game.exceptions.InsufficientPlayersException;
 import com.bol.game.pojos.Game;
+import com.bol.game.pojos.Lobby;
 import com.bol.game.pojos.Player;
 import com.bol.game.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,41 +17,46 @@ public class GameLobbyService {
     private static final int STONES_PER_PIT = 6;
     private static final int NUMBER_OF_PITS = 7;
 
-    private final AtomicReference<Game> lobby;
+    private AtomicReference<Lobby> lobby;
 
     private final GameRepository gameRepository;
 
     @Autowired
     public GameLobbyService(GameRepository gameRepository) {
-        this.lobby = new AtomicReference<>(new Game());
+        this.lobby = new AtomicReference<>(new Lobby());
         this.gameRepository = gameRepository;
     }
 
     public Game join(Player player) {
 
-        Game game = lobby.updateAndGet(gameLobby -> addPlayerToLobby(player, gameLobby));
+        Lobby updatedLobby = this.lobby.updateAndGet(lobby -> addPlayerToLobby(player, lobby));
 
-        if (game.getFirstPlayer() != null && game.getSecondPlayer() != null) {
-
-            game.setTurnOfWithId(game.getFirstPlayer().getId());
-            game.getFirstPlayer().setPits(initRow());
-            game.getSecondPlayer().setPits(initRow());
-
-            return gameRepository.save(lobby.getAndSet(new Game()));
-            
-        } else {
+        if (updatedLobby.hasInsufficientPlayers()) {
             throw new InsufficientPlayersException();
         }
+
+        Game game = new Game(updatedLobby.getFirstPlayer(), updatedLobby.getSecondPlayer());
+        game.setTurnOfWithId(game.getFirstPlayer().getId());
+        game.getFirstPlayer().setPits(initRow());
+        game.getSecondPlayer().setPits(initRow());
+        return gameRepository.save(game);
     }
 
-    private Game addPlayerToLobby(Player player, Game gameLobby) {
+    private Lobby addPlayerToLobby(Player player, Lobby lobby) {
 
-        if (gameLobby.getFirstPlayer() == null
-                || gameLobby.getFirstPlayer().getId().equals(player.getId())) {
-            return new Game(player);
-        } else  {
-            return new Game(gameLobby.getFirstPlayer(), player);
+        if (lobby.isEmpty() || lobby.isFull()) {
+            return new Lobby(player);
+        } else {
+
+            Player waitingPlayer = lobby.getWaitingPlayer();
+
+            if (!waitingPlayer.getId().equals(player.getId())) {
+                return new Lobby(waitingPlayer, player);
+            } else {
+                return new Lobby(player);
+            }
         }
+
     }
 
     private int[] initRow() {

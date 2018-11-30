@@ -5,6 +5,7 @@ import com.bol.game.pojos.Movement;
 import com.bol.game.pojos.Player;
 import com.bol.game.repositories.GameRepository;
 import com.bol.game.repositories.PlayerRepository;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +19,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -106,35 +112,37 @@ public class GameControllerTest {
 
         clearRepos();
 
+
+        ExecutorService service =
+                Executors.newCachedThreadPool();
+
         List<String> ids = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 500; i++) {
             Player createdPlayer = playerRepository.save(new Player("player" + i));
             ids.add(createdPlayer.getId());
         }
 
-        List<Thread> threadList = new ArrayList<>();
-        ids.forEach(id -> threadList.add(new Thread(
-                () ->
-                webTestClient.get().uri("/game/" + id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .exchange()
-                            .expectStatus()
-                            .is2xxSuccessful()
-        )));
+        Collection<Future> futures = new ArrayList<>(ids.size());
 
-        threadList.forEach(thread -> {
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                fail();
-            }
-        });
+        ids.forEach(
+                id -> futures.add(
+                        service.submit( () ->
+                                webTestClient.get().uri("/game/" + id)
+                                        .accept(MediaType.APPLICATION_JSON)
+                                        .exchange()
+                                        .expectStatus()
+                                        .is2xxSuccessful())));
+
+
+        for (Future future: futures) {
+            future.get();
+        }
+
 
         List<Game> games = gameRepository.findAll();
 
-        assertEquals(50, games.size());
+        assertThat(games.size(), is(250));
 
         ids.stream().forEach(id -> assertTrue(
                 games
